@@ -2,21 +2,21 @@ use std::io::{self, Read, Write};
 
 use byteorder::{ReadBytesExt, WriteBytesExt};
 
-#[derive(Debug, Default, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct RGB256 {
     pub r: u8,
     pub g: u8,
     pub b: u8,
 }
 
-#[derive(Debug, Default, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct RGB64 {
     pub r: u8,
     pub g: u8,
     pub b: u8,
 }
 
-#[derive(Debug, Default, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct RGBA256 {
     pub r: u8,
     pub g: u8,
@@ -24,7 +24,7 @@ pub struct RGBA256 {
     pub a: u8,
 }
 
-#[derive(Debug, Default, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Grayscale256 {
     pub v: u8,
     pub a: u8,

@@ -1,4 +1,4 @@
-use std::io::{self, Cursor, Read, Seek, SeekFrom, Write};
+use std::io::{self, Cursor, Read, Seek, SeekFrom, Write, Error};
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
 
@@ -7,6 +7,8 @@ use flate2::read::ZlibDecoder;
 use crate::color::{Pixels};
 use crate::helpers::read_bytes;
 use crate::{ColorDepth, Header};
+use flate2::write::ZlibEncoder;
+use flate2::Compression;
 
 #[derive(Debug)]
 pub enum Cel {
@@ -49,6 +51,13 @@ impl Cel {
         let len = s.len() as u64;
         let mut rdr = Cursor::new(s);
         CelChunk::read_pixels(&mut rdr, color_depth, len).unwrap()
+    }
+
+    pub fn compress_pixels(pixels: &Pixels) -> Result<Vec<u8>, Error> {
+        let v = Vec::new();
+        let mut z = ZlibEncoder::new(v, Compression::default());
+        pixels.write(&mut z);
+        z.finish()
     }
 
     pub fn pixels(&self, color_depth: &ColorDepth) -> Option<Pixels> {
