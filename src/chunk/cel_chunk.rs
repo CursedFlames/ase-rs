@@ -28,7 +28,7 @@ pub enum Cel {
 }
 
 impl Cel {
-    pub fn w(&self) -> Option<u16> {
+    pub fn h(&self) -> Option<u16> {
         match &self {
             Cel::CompressedImage { height, .. } => Some(*height),
             Cel::RawCel { height, .. } => Some(*height),
@@ -36,7 +36,7 @@ impl Cel {
         }
     }
 
-    pub fn h(&self) -> Option<u16> {
+    pub fn w(&self) -> Option<u16> {
         match &self {
             Cel::CompressedImage { width, .. } => Some(*width),
             Cel::RawCel { width, .. } => Some(*width),
