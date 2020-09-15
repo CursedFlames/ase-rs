@@ -42,19 +42,22 @@ impl Cel {
         }
     }
 
+    pub fn decompress_pixels(zlib_data: &Vec<u8>, color_depth: &ColorDepth) -> Pixels {
+        let mut d = ZlibDecoder::new(&zlib_data[..]);
+        let mut s = Vec::new();
+        d.read_to_end(&mut s).unwrap();
+        let len = s.len() as u64;
+        let mut rdr = Cursor::new(s);
+        CelChunk::read_pixels(&mut rdr, color_depth, len).unwrap()
+    }
+
     pub fn pixels(&self, color_depth: &ColorDepth) -> Option<Pixels> {
         match &self {
             Cel::CompressedImage {
                 zlib_compressed_data,
                 ..
             } => {
-                let mut d = ZlibDecoder::new(&zlib_compressed_data[..]);
-                let mut s = Vec::new();
-                d.read_to_end(&mut s).unwrap();
-                let len = s.len() as u64;
-                let mut rdr = Cursor::new(s);
-                let pixels = CelChunk::read_pixels(&mut rdr, color_depth, len);
-                Some(pixels.unwrap().clone())
+                Some(Cel::decompress_pixels(zlib_compressed_data, color_depth))
             }
             Cel::RawCel { pixels, .. } => Some(pixels.clone()),
             _ => unimplemented!(),
