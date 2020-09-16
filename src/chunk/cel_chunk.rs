@@ -56,7 +56,7 @@ impl Cel {
     pub fn compress_pixels(pixels: &Pixels) -> Result<Vec<u8>, Error> {
         let v = Vec::new();
         let mut z = ZlibEncoder::new(v, Compression::default());
-        pixels.write(&mut z);
+        pixels.write(&mut z)?;
         z.finish()
     }
 
